@@ -26,6 +26,10 @@ class PresenterBottomSheet(
         }
     }
 
+    override fun searchProduct(searchQuery: String) {
+        //
+    }
+
     override fun restoreProduct(product: Product) {
         product.archived = false
         CoroutineScope(Dispatchers.IO).launch {

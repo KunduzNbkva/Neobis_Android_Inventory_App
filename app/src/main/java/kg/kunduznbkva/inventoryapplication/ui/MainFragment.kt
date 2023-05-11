@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import kg.kunduznbkva.inventoryapplication.R
@@ -21,11 +21,10 @@ import kg.kunduznbkva.inventoryapplication.presenter.IViewProducts
 import kg.kunduznbkva.inventoryapplication.presenter.PresenterMain
 import kg.kunduznbkva.inventoryapplication.utils.BottomSheetDialog
 
-class MainFragment : Fragment(), OnMenuItemClick, OnItemClickListener,IViewProducts {
+class MainFragment : Fragment(), OnMenuItemClick, OnItemClickListener, IViewProducts {
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: ProductAdapter
     private lateinit var presenter: PresenterMain
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +38,6 @@ class MainFragment : Fragment(), OnMenuItemClick, OnItemClickListener,IViewProdu
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        presenter.observeProductsList().observe(viewLifecycleOwner) {
-            viewProducts(it)
-        }
         return binding.root
     }
 
@@ -54,9 +50,21 @@ class MainFragment : Fragment(), OnMenuItemClick, OnItemClickListener,IViewProdu
         initRecycler()
         getProductsFromLocalDB()
         floatingBtnClick()
-        presenter.observeProductsList().observe(viewLifecycleOwner) {
-          viewProducts(it)
-        }
+        initSearchView()
+    }
+
+    private fun initSearchView() {
+        binding.searchViewMain.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) presenter.searchProduct(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { presenter.searchProduct(it) }
+                return false
+            }
+        })
     }
 
     private fun initRecycler() {
@@ -88,9 +96,9 @@ class MainFragment : Fragment(), OnMenuItemClick, OnItemClickListener,IViewProdu
         createBottomSheet(productModel)
     }
 
-    private fun createBottomSheet(product: Product){
-        val dialog = BottomSheetDialog(product,false)
-        dialog.show(parentFragmentManager,getString(R.string.modal_bottom_sheet))
+    private fun createBottomSheet(product: Product) {
+        val dialog = BottomSheetDialog(product, false)
+        dialog.show(parentFragmentManager, getString(R.string.modal_bottom_sheet))
     }
 
     override fun viewProducts(products: List<Product>) {

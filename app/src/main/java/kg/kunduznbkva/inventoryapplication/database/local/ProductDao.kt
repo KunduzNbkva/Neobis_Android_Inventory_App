@@ -12,6 +12,9 @@ interface ProductDao {
     @Query("SELECT * FROM Product WHERE archived = 1 ORDER BY id ASC")
     suspend fun getAllArchiveProducts() :  MutableList<Product>
 
+    @Query("SELECT * FROM Product WHERE name LIKE :searchQuery OR fabric LIKE :searchQuery")
+    suspend fun searchProducts(searchQuery: String) :  MutableList<Product>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(product: Product)
 

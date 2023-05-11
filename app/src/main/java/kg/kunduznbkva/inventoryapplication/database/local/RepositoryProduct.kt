@@ -3,7 +3,6 @@ package kg.kunduznbkva.inventoryapplication.database.local
 import kg.kunduznbkva.inventoryapplication.model.Product
 
 class RepositoryProduct(private val productDao: ProductDao) {
-
     suspend fun getAllProducts(): List<Product> {
         return productDao.getAllProducts()
     }
@@ -24,4 +23,7 @@ class RepositoryProduct(private val productDao: ProductDao) {
         return productDao.deleteProduct(product)
     }
 
+    suspend fun searchProduct(searchQuery: String): List<Product> {
+        return productDao.searchProducts(searchQuery)
+    }
 }

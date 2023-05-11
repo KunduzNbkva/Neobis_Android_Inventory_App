@@ -47,6 +47,12 @@ class PresenterArchived(
         }
     }
 
+    override fun searchProduct(searchQuery: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repositoryProduct.searchProduct(searchQuery)
+        }
+    }
+
     override fun attachView(view: IViewProducts) {
         this.view = view
     }
