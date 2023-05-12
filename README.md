@@ -9,10 +9,6 @@
 ## Functionality
 
 The following **required** functionality is completed:
-user can store all items
-delete products
-or archive them, as well as add new ones
-
 * [x] User can store all products
 * [x] Delete products
 * [x] Update information about products
@@ -21,6 +17,7 @@ or archive them, as well as add new ones
 ## Video Walkthrough
 
 Here's a walkthrough of implemented features:
+
 
 ![deleting_archive](https://github.com/KunduzNbkva/Neobis_Android_Inventory_App/assets/57134232/cc2518d3-cf50-4174-83a4-836ab9575c6f)
 
